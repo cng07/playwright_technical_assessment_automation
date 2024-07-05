@@ -64,17 +64,45 @@ test('Test case 3 @Run', async ({ page }) => {
     test.setTimeout(60000);
     const h = new Helper(page);
     const _page = new JupiterPage(page);
-    // await page.goto('https://jupiter.cloud.planittesting.com/#/');
 
-    // From the home page go to contact page
+    let item1: string = 'Stuffed Frog';
+    let item2: string = 'Fluffy Bunny';
+    let item3: string = 'Valentine Bear';
+
+    // const items = [item1, item2, item3];
+    // let total = 0;
+
     await _page.goToJupiterPage();
-    await _page.goToContactPage();
 
-    // Populate mandatory fields
+    // Buy 2 Stuffed Frog, 5 Fluffy Bunny, 3 Valentine Bear
+    await _page.goToShopPage();
+    await _page.buyItemsFromShop(item1, 2); // (itemName, quantity)
+    await _page.buyItemsFromShop(item2, 5);
+    await _page.buyItemsFromShop(item3, 3);    
 
-    // Click submit button
+    // Go to the cart page
+    await _page.goToCartPage();
 
-    // Validate successful submission message
+    // Verify the subtotal for each product is correct
+    await _page.verifySubtotalOfItem(item1); // (itemName)
+    await _page.verifySubtotalOfItem(item2);
+    await _page.verifySubtotalOfItem(item3);
 
+    // Verify the price for each product
+    await _page.verifyPriceForEachProduct(item1);
+    await _page.verifyPriceForEachProduct(item2);
+    await _page.verifyPriceForEachProduct(item3);
+
+
+    // Verify that total = sum(sub totals)
+    // await _page.verifyTotalAndSubtotal();
+    await _page.verifyTotalOfThreeItems(item1, item2, item3);
+
+    // for (const item in items) {
+    //     total += await _page.getSubtotalOfItem(item);
+    // }
+    // console.log(`${total}`);
+
+    // console.log(await _page.getSubtotalOfItem(item1));
 });
 

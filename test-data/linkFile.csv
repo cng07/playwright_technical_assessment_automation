@@ -1,2 +1,10 @@
-rowNum,name,Link
+rowNum,name,Value
 0,JupiterToys,https://jupiter.cloud.planittesting.com/#/
+1,priceTeddyBear,$12.99
+2,priceStuffedFrog,$10.99
+3,priceHandmadeDoll,$10.99
+4,priceFluffyBunny,$9.99
+5,priceSmileyBear,$14.99
+6,priceFunnyCow,$10.99
+7,priceValentineBear,$14.99
+8,priceSmileyFace,$9.99
