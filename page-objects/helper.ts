@@ -12,6 +12,9 @@ export class Helper {
         
     }
 
+    async pause(ms: number) {
+        await this.page.waitForTimeout(ms); // wait for x milliseconds
+    }
 
     async getLinkOnCSV(rowNum: number, header: string) {
         // sample:  await this.page.goto(await this.h.getLinkOnCSV([row],[headerValue]));

@@ -8,8 +8,10 @@ export class JupiterPage {
     readonly h: Helper
 
     buttonContact; buttonHome; buttonShop; buttonSubmit; errorMessageMain; errorMessageForename; errorMessageEmail; errorMessageMessageField;
-    textForename; textEmail; textMessage; fieldForename; fieldEmail; fieldMessage
+    textForename; textEmail; textMessage; fieldForename; fieldEmail; fieldMessage; messageSuccess; buttonBack;
+    textSendingFeedback; progressBar
     :Locator
+    // Locator should be on all variables above
 
     constructor(page: Page) {
         this.page = page
@@ -29,6 +31,10 @@ export class JupiterPage {
         this.fieldForename = page.getByPlaceholder('John', {exact: true});
         this.fieldEmail = page.getByPlaceholder('john.example@planit.net.au');
         this.fieldMessage = page.getByPlaceholder('Tell us about it..');
+        this.textSendingFeedback = page.getByRole('heading', { name: 'Sending Feedback'});
+        this.progressBar = page.locator('.progress');
+        // this.messageSuccess = page.getByText("Thanks John, we appreciate your feedback.");
+        this.buttonBack = page.getByRole('link', {name: '« Back'});
     }
 
     async goToJupiterPage() {
@@ -61,10 +67,10 @@ export class JupiterPage {
         await expect(this.textMessage).toHaveCSS('color', 'rgb(185, 74, 72)');
     }
 
-    async populateMandatoryFields() {
-        await this.fieldForename.fill("Firstname");
-        await this.fieldEmail.fill("firstname@email.com")
-        await this.fieldMessage.fill("Message field test only");
+    async populateMandatoryFields(forename: string, email: string, message: string) {
+        await this.fieldForename.fill(forename);
+        await this.fieldEmail.fill(email)
+        await this.fieldMessage.fill(message);
     }
 
     async validateErrorMessagesGone() {
@@ -76,6 +82,17 @@ export class JupiterPage {
         await expect(this.textForename).toHaveCSS('color', 'rgb(51, 51, 51)');
         await expect(this.textEmail).toHaveCSS('color', 'rgb(51, 51, 51)');
         await expect(this.textMessage).toHaveCSS('color', 'rgb(51, 51, 51)');
+    }
+
+    async validateSuccessfulSubmissionMessage(forename: string) {
+        await expect(this.textSendingFeedback).toBeVisible();
+        await expect(this.progressBar).toBeVisible();
+
+        this.messageSuccess = this.page.getByText("Thanks "+ forename +", we appreciate your feedback.");
+        await expect(this.messageSuccess).toBeVisible({timeout: 60000});
+        await expect(this.messageSuccess).toHaveCSS('color', 'rgb(70, 136, 71)');
+        await expect(this.messageSuccess).toHaveCSS('background-color', 'rgb(223, 240, 216)');
+        await expect(this.buttonBack).toBeVisible();
     }
 
 
